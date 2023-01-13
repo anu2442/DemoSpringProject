@@ -2,7 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Course;
 import com.example.demo.services.CourseService;
+import com.example.demo.services.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,12 +15,6 @@ public class MyController {
 
     @Autowired
     private CourseService courseService;
-
-    @GetMapping("/home")
-    public String home(){
-        return "L babu chimtu";
-
-    }
 
     // get the courses
     @GetMapping("/courses")
@@ -37,7 +34,7 @@ public class MyController {
         return this.courseService.addCourse(course);
     }
 
-    // put the course
+    // update the course
     @PutMapping("/courses")
     public Course putCourse(@RequestBody Course course){
         return this.courseService.putCourse(course);
@@ -45,8 +42,12 @@ public class MyController {
 
     // delete the course
     @DeleteMapping("/courses/{courseId}")
-    public void deleteCourse(@PathVariable String courseId){
-        this.courseService.deleteCourse(Long.parseLong(courseId));
-        return;
+    public ResponseEntity<HttpStatus> deleteCourse(@PathVariable String courseId){
+        try {
+            this.courseService.deleteCourse(Long.parseLong(courseId));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
