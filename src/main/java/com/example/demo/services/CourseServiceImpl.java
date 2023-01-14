@@ -40,10 +40,10 @@ public class CourseServiceImpl implements CourseService{
 //            }
 //        }
 //        return course;
-//        return courseDao.getOne(courseId);
+//        return courseDao.getOne(new Long(courseId));
+//        return courseDao.getById(courseId);
         List<Course> temp = courseDao.findAll();
-        for (Course c :
-                temp) {
+        for (Course c : temp) {
             if (c.getId() == courseId) {
                 return c;
             }
